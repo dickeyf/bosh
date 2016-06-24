@@ -12,15 +12,12 @@ RSpec.configure do |config|
   config.register_ordering(:global) do |list|
     # make sure that stig test case check will be run at last
     list.each do |example_group|
-      puts "-------------------------- stig.rb example_group.metadata: #{example_group.metadata}"
       if example_group.metadata[:stig_check]
         list.delete example_group
         list.push example_group
         break
       end
     end
-
-    puts "-------------------------- list: #{list}"
     list
   end
 end
