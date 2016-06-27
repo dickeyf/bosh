@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'CIS test case verification', {stemcell_image: true, cis_check: true} do
+describe 'CIS test case verification', {stemcell_image: true, security_spec: true} do
 
   it 'confirms that all CIS test cases ran' do
     expected_base_cis_test_cases = %W{
@@ -55,7 +55,6 @@ describe 'CIS test case verification', {stemcell_image: true, cis_check: true} d
         expected_cis_test_cases = expected_base_cis_test_cases + [
         ]
     end
-    puts "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ $cis_test_cases: #{$cis_test_cases.to_a}"
     expect($cis_test_cases.to_a).to match_array expected_cis_test_cases
   end
 end
