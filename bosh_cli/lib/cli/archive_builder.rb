@@ -84,7 +84,7 @@ module Bosh::Cli
       resource.run_script(:pre_packaging, staging_dir)
 
       in_staging_dir do
-        tar_out = `tar -chzf #{tarball_path} . 2>&1`
+        tar_out = `tar --force-local -chzf #{tarball_path} . 2>&1`
         unless $?.exitstatus == 0
           raise PackagingError, "Cannot create tarball: #{tar_out}"
         end
