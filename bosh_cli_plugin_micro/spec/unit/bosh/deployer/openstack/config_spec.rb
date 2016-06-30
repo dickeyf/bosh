@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'fog'
+require 'fog/openstack'
 
 describe Bosh::Deployer::Config do
   before { @dir = Dir.mktmpdir('bdc_spec') }
