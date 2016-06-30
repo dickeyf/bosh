@@ -75,12 +75,12 @@ module Bosh::Cli
 
       case tar_version
         when /.*gnu.*/i
-            Kernel.system("tar", "-C", @unpack_dir, "-xzf", @tarball_path, "--occurrence", "#{target}", out: "/dev/null", err: "/dev/null")
+            Kernel.system("tar", "--force-local", "-C", @unpack_dir, "-xzf", @tarball_path, "--occurrence", "#{target}")
         when /.*bsd.*/i
           if target[-1, 1] == "/"
             raw_unpack(target)
           else
-            Kernel.system("tar", "-C", @unpack_dir, "--fast-read", "-xzf", @tarball_path, "#{target}", out: "/dev/null", err: "/dev/null")
+            Kernel.system("tar", "--force-local", "-C", @unpack_dir, "--fast-read", "-xzf", @tarball_path, "#{target}")
           end
         else
           raw_unpack(target)
@@ -88,7 +88,7 @@ module Bosh::Cli
     end
 
     def raw_unpack(target)
-      Kernel.system("tar", "-C", @unpack_dir, "-xzf", @tarball_path, "#{target}", out: "/dev/null", err: "/dev/null")
+      Kernel.system("tar", "--force-local", "-C", @unpack_dir, "-xzf", @tarball_path, "#{target}")
     end
 
     # verifies that all jobs in release manifest were unpacked
@@ -103,7 +103,7 @@ module Bosh::Cli
     # Unpacks tarball to @unpack_dir, returns true if succeeded, false if failed
     def unpack
       return @unpacked unless @unpacked.nil?
-      exit_success = system("tar", "-C", @unpack_dir, "-xzf", @tarball_path, out: "/dev/null", err: "/dev/null")
+      exit_success = system("tar", "--force-local", "-C", @unpack_dir, "-xzf", @tarball_path)
       @unpacked = !!exit_success
     end
 
@@ -173,7 +173,7 @@ module Bosh::Cli
       repacked_path = File.join(tmpdir, 'release-reformat.tgz')
 
       Dir.chdir(@unpack_dir) do
-        exit_success = system("tar", "-czf", repacked_path, ".", out: "/dev/null", err: "/dev/null")
+        exit_success = system("tar", "--force-local", "-czf", repacked_path, ".")
         return repacked_path if exit_success
       end
     end
@@ -220,7 +220,7 @@ module Bosh::Cli
         end
 
         return nil if @skipped == 0
-        exit_success = system("tar", "-czf", repacked_path, ".", out: "/dev/null", err: "/dev/null")
+        exit_success = system("tar", "--force-local", "-czf", repacked_path, ".")
         return repacked_path if exit_success
       end
     end
@@ -347,7 +347,7 @@ module Bosh::Cli
 
           job_tmp_dir = Dir.mktmpdir
           FileUtils.mkdir_p(job_tmp_dir)
-          job_extracted = !!system("tar", "-C", job_tmp_dir, "-xzf", job_file, out: "/dev/null", err: "/dev/null")
+          job_extracted = !!system("tar", "--force-local", "-C", job_tmp_dir, "-xzf", job_file)
 
           step("Extract job '#{name}'", "Cannot extract job '#{name}'") do
             job_extracted
