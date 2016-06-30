@@ -35,7 +35,7 @@ module Bosh::Cli
         header("Copying license")
         say("license".make_green)
         nl
-        `tar -xzf #{license.tarball_path} -C #{build_dir} 2>&1`
+        `tar --force-local -xzf #{license.tarball_path} -C #{build_dir} 2>&1`
         unless $?.exitstatus == 0
           raise InvalidRelease, "Cannot extract license tarball"
         end
